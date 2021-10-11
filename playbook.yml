@@ -1,0 +1,7 @@
+---
+- hosts: NGINX_SERVERS
+  become: true
+
+  roles:
+    - epel
+    - nginx

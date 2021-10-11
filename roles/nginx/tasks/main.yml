@@ -1,0 +1,22 @@
+---
+- name: Install Nginx
+  yum:
+    name=nginx
+    state=latest
+
+-  name: Copy Config
+   template:
+     src: nginx.conf.j2
+     dest: /etc/nginx/nginx.conf
+   notify:
+     - reload
+
+
+-  name: Copy Vhosts Configs
+   template:
+     src: nginx.conf.j2
+     dest: /etc/nginx/sites-enabled/{{ item.value }}.conf
+   when: ansible_default_ipv4.address == item.key
+   with_dict: "{{ virtual_hosts }}"
+   notify:
+     - reload
